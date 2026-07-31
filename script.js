@@ -1,227 +1,56 @@
-// ===============================
-// Inventory Scanner V2
-// QR Scanner + Google Sheet
-// ===============================
+const scriptURL = "https://script.google.com/macros/s/AKfycbwXL948q6a3fBEDv_2XgNsYFRmB317QCKsnor6zLGhQDHbd3glIuACEBPwlaBgga6B_/exec";
 
 
-let currentMode = "IN";
+function sendToSheet(code) {
 
+  const data = {
+    code: code,
+    type: document.getElementById("type").value,
+    user: document.getElementById("user").value
+  };
 
-// Google Sheet Web App URL
 
-const GOOGLE_URL =
-"https://script.google.com/macros/s/AKfycbwXL948q6a3fBEDv_2XgNsYFRmB317QCKsnor6zLGhQDHbd3glIuACEBPwlaBgga6B_/exec";
+  fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
 
+  .then(response => response.json())
 
+  .then(result => {
 
+    console.log(result);
 
+    document.getElementById("result").innerHTML =
+    "Success: " + code;
 
-// ===============================
-// IN / OUT BUTTON
-// ===============================
+  })
 
+  .catch(error => {
 
-const btnIn = document.getElementById("btnIn");
-const btnOut = document.getElementById("btnOut");
-const modeBanner = document.getElementById("modeBanner");
+    console.log(error);
 
+    document.getElementById("result").innerHTML =
+    "Failed";
 
-
-btnIn.onclick = function(){
-
-    currentMode = "IN";
-
-    btnIn.classList.add("active");
-    btnOut.classList.remove("active");
-
-    modeBanner.innerHTML =
-    "🟢 CURRENT MODE : IN";
-
-};
-
-
-
-btnOut.onclick = function(){
-
-    currentMode = "OUT";
-
-    btnOut.classList.add("active");
-    btnIn.classList.remove("active");
-
-    modeBanner.innerHTML =
-    "🔴 CURRENT MODE : OUT";
-
-};
-
-
-
-
-
-
-// ===============================
-// QR SCANNER
-// ===============================
-
-
-let scanner;
-
-
-
-function startScanner(){
-
-
-    scanner = new Html5Qrcode("reader");
-
-
-    scanner.start(
-
-        {
-            facingMode:"environment"
-        },
-
-
-        {
-            fps:10,
-            qrbox: undefined
-        },
-
-
-        function(decodedText){
-
-
-            console.log("SCAN:",decodedText);
-
-
-
-            document.getElementById("barcode").value =
-            decodedText;
-
-
-
-            // stop camera
-
-            scanner.stop();
-
-
-
-        },
-
-
-        function(errorMessage){
-
-        }
-
-
-    );
-
+  });
 
 }
 
 
 
+function onScanSuccess(decodedText) {
 
-// ===============================
-// SUBMIT TO GOOGLE SHEET
-// ===============================
+  console.log("Scan:", decodedText);
 
+  sendToSheet(decodedText);
 
-document.getElementById("submitBtn").onclick =
-function(){
+}
 
 
 
-    let data = {
+function onScanFailure(error) {
 
+  // 不显示扫描错误
 
-        barcode:
-        document.getElementById("barcode").value,
-
-
-        mode:
-        currentMode,
-
-
-        batch:
-        document.getElementById("batch").value,
-
-
-        pieces:
-        document.getElementById("pieces").value,
-
-
-        cartons:
-        document.getElementById("cartons").value,
-
-
-        qty:
-        document.getElementById("qty").value,
-
-
-        writer:
-        document.getElementById("writer").value
-
-
-    };
-
-
-
-
-    fetch(GOOGLE_URL, {
-
-
-        method:"POST",
-
-
-        body:JSON.stringify(data)
-
-
-    })
-
-
-
-    .then(response=>response.json())
-
-
-    .then(result=>{
-
-
-        alert("✅ Saved to Google Sheet");
-
-
-        console.log(result);
-
-
-    })
-
-
-
-    .catch(error=>{
-
-
-        alert("❌ Error");
-
-
-        console.log(error);
-
-
-    });
-
-
-
-};
-
-
-
-
-
-
-// ===============================
-// START CAMERA
-// ===============================
-
-
-window.onload=function(){
-
-    startScanner();
-
-};
+}
