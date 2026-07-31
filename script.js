@@ -1,56 +1,124 @@
-// =========================
+// ===============================
 // Inventory Scanner V2
-// =========================
+// QR Scanner + IN / OUT Control
+// ===============================
 
-let transactionMode = "IN";
 
-// Elements
+let currentMode = "IN";
+
+
+// ===============================
+// IN / OUT BUTTON
+// ===============================
+
+
 const btnIn = document.getElementById("btnIn");
 const btnOut = document.getElementById("btnOut");
 const modeBanner = document.getElementById("modeBanner");
 
-// ---------- Default ----------
-setMode("IN");
 
-// ---------- Events ----------
-btnIn.addEventListener("click", () => {
-    setMode("IN");
-});
 
-btnOut.addEventListener("click", () => {
-    setMode("OUT");
-});
+btnIn.onclick = function(){
 
-// ---------- Functions ----------
-function setMode(mode){
+    currentMode = "IN";
 
-    transactionMode = mode;
+    btnIn.classList.add("active");
+    btnOut.classList.remove("active");
 
-    if(mode === "IN"){
+    modeBanner.innerHTML = "🟢 CURRENT MODE : IN";
 
-        modeBanner.innerHTML = "🟢 CURRENT MODE : IN";
-        modeBanner.style.background = "#16a34a";
+};
 
-        btnIn.classList.add("active");
-        btnOut.classList.remove("active");
 
-        btnIn.innerHTML = "🟢 IN";
-        btnOut.innerHTML = "⚪ OUT";
 
-    }
-    else{
 
-        modeBanner.innerHTML = "🔴 CURRENT MODE : OUT";
-        modeBanner.style.background = "#dc2626";
+btnOut.onclick = function(){
 
-        btnOut.classList.add("active");
-        btnIn.classList.remove("active");
+    currentMode = "OUT";
 
-        btnOut.innerHTML = "🔴 OUT";
-        btnIn.innerHTML = "⚪ IN";
+    btnOut.classList.add("active");
+    btnIn.classList.remove("active");
 
-    }
+    modeBanner.innerHTML = "🔴 CURRENT MODE : OUT";
 
-    console.log("Current Mode :", transactionMode);
+};
+
+
+
+
+
+// ===============================
+// QR CODE SCANNER
+// ===============================
+
+
+let scanner;
+
+
+function startScanner(){
+
+
+    scanner = new Html5Qrcode("reader");
+
+
+    scanner.start(
+
+        {
+            facingMode:"environment"
+        },
+
+
+        {
+            fps:10,
+            qrbox:250
+        },
+
+
+        function(decodedText){
+
+
+            console.log("SCAN:", decodedText);
+
+
+            document.getElementById("barcode").value = decodedText;
+
+
+
+            // stop after successful scan
+
+            scanner.stop();
+
+
+
+        },
+
+
+        function(errorMessage){
+
+            // scanning continues
+
+        }
+
+
+    )
+
+    .catch(function(err){
+
+        console.log("Camera Error:", err);
+
+    });
+
 
 }
+
+
+
+
+
+// start camera when page load
+
+window.onload = function(){
+
+    startScanner();
+
+};
