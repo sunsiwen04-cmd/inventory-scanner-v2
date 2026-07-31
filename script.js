@@ -1,145 +1,56 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
+// =========================
+// Inventory Scanner V2
+// =========================
 
-body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f3f4f6;
-    color:#333;
-}
+let transactionMode = "IN";
 
-.container{
-    max-width:500px;
-    margin:20px auto;
-    background:#fff;
-    border-radius:18px;
-    padding:20px;
-    box-shadow:0 5px 15px rgba(0,0,0,.12);
-}
+// Elements
+const btnIn = document.getElementById("btnIn");
+const btnOut = document.getElementById("btnOut");
+const modeBanner = document.getElementById("modeBanner");
 
-h1{
-    text-align:center;
-    margin-bottom:20px;
-    font-size:28px;
-}
+// ---------- Default ----------
+setMode("IN");
 
-/* Current Mode */
+// ---------- Events ----------
+btnIn.addEventListener("click", () => {
+    setMode("IN");
+});
 
-.mode-banner{
-    background:#16a34a;
-    color:#fff;
-    text-align:center;
-    padding:14px;
-    border-radius:12px;
-    font-size:18px;
-    font-weight:bold;
-    margin-bottom:15px;
-}
+btnOut.addEventListener("click", () => {
+    setMode("OUT");
+});
 
-/* Buttons */
+// ---------- Functions ----------
+function setMode(mode){
 
-.mode-buttons{
-    display:flex;
-    gap:10px;
-    margin-bottom:25px;
-}
+    transactionMode = mode;
 
-.mode-btn{
-    flex:1;
-    height:50px;
-    border:none;
-    border-radius:12px;
-    background:#e5e7eb;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
-    transition:.2s;
-}
+    if(mode === "IN"){
 
-.mode-btn.active{
-    background:#16a34a;
-    color:white;
-}
+        modeBanner.innerHTML = "🟢 CURRENT MODE : IN";
+        modeBanner.style.background = "#16a34a";
 
-/* Form */
+        btnIn.classList.add("active");
+        btnOut.classList.remove("active");
 
-.form-group{
-    margin-bottom:18px;
-}
+        btnIn.innerHTML = "🟢 IN";
+        btnOut.innerHTML = "⚪ OUT";
 
-label{
-    display:block;
-    font-weight:bold;
-    margin-bottom:8px;
-}
+    }
+    else{
 
-input,
-select{
-    width:100%;
-    height:50px;
-    border:1px solid #d1d5db;
-    border-radius:12px;
-    padding:0 15px;
-    font-size:16px;
-    background:#fff;
-}
+        modeBanner.innerHTML = "🔴 CURRENT MODE : OUT";
+        modeBanner.style.background = "#dc2626";
 
-input:focus,
-select:focus{
-    outline:none;
-    border:2px solid #16a34a;
-}
+        btnOut.classList.add("active");
+        btnIn.classList.remove("active");
 
-/* Camera */
+        btnOut.innerHTML = "🔴 OUT";
+        btnIn.innerHTML = "⚪ IN";
 
-#reader{
-    width:100%;
-    height:250px;
-    border:2px dashed #cbd5e1;
-    border-radius:12px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#888;
-    background:#fafafa;
-}
-
-/* Submit */
-
-#submitBtn{
-    width:100%;
-    height:55px;
-    border:none;
-    border-radius:12px;
-    background:#2563eb;
-    color:white;
-    font-size:18px;
-    font-weight:bold;
-    cursor:pointer;
-    margin-top:10px;
-}
-
-#submitBtn:active{
-    transform:scale(.98);
-}
-
-/* Mobile */
-
-@media(max-width:600px){
-
-    .container{
-        margin:10px;
-        padding:18px;
     }
 
-    h1{
-        font-size:24px;
-    }
-
-    .mode-btn{
-        font-size:16px;
-    }
+    console.log("Current Mode :", transactionMode);
 
 }
