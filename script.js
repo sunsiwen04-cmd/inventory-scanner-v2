@@ -31,7 +31,6 @@ btnIn.onclick = function(){
 
 
 
-
 btnOut.onclick = function(){
 
     currentMode = "OUT";
@@ -43,32 +42,6 @@ btnOut.onclick = function(){
 
 };
 
-
-
-
-// ===============================
-// SCAN SOUND
-// ===============================
-
-
-function scanBeep(){
-
-    let sound = document.getElementById("scanSound");
-
-    if(sound){
-
-        sound.currentTime = 0;
-
-        sound.play()
-        .catch(function(error){
-
-            console.log("Sound blocked:", error);
-
-        });
-
-    }
-
-}
 
 
 
@@ -97,7 +70,10 @@ function startScanner(){
 
         {
             fps:10,
-            qrbox:250
+
+            // 不显示中间扫描框
+            qrbox: undefined
+
         },
 
 
@@ -108,21 +84,25 @@ function startScanner(){
 
 
 
-            // 🔊 scan beep
-
-            scanBeep();
-
-
-
-            // auto input barcode
+            // 自动输入 Barcode
 
             document.getElementById("barcode").value = decodedText;
 
 
 
-            // stop after scan
+            // 扫码成功自动停止
 
-            scanner.stop();
+            scanner.stop()
+            .then(function(){
+
+                console.log("Scanner stopped");
+
+            })
+            .catch(function(err){
+
+                console.log(err);
+
+            });
 
 
 
@@ -131,7 +111,7 @@ function startScanner(){
 
         function(errorMessage){
 
-            // keep scanning
+            // 继续扫描
 
         }
 
