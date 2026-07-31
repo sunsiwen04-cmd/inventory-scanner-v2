@@ -47,12 +47,28 @@ btnOut.onclick = function(){
 
 
 
+
 // ===============================
 // QR CODE SCANNER
 // ===============================
 
 
 let scanner;
+
+
+
+// scan success sound
+
+function scanBeep(){
+
+    let audio = new Audio(
+        "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
+    );
+
+    audio.play();
+
+}
+
 
 
 function startScanner(){
@@ -79,6 +95,15 @@ function startScanner(){
 
             console.log("SCAN:", decodedText);
 
+
+
+            // 🔊 beep sound
+
+            scanBeep();
+
+
+
+            // auto input barcode
 
             document.getElementById("barcode").value = decodedText;
 
@@ -110,6 +135,7 @@ function startScanner(){
 
 
 }
+
 
 
 
