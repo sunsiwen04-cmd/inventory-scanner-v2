@@ -46,6 +46,31 @@ btnOut.onclick = function(){
 
 
 
+// ===============================
+// SCAN SOUND
+// ===============================
+
+
+function scanBeep(){
+
+    let sound = document.getElementById("scanSound");
+
+    if(sound){
+
+        sound.currentTime = 0;
+
+        sound.play()
+        .catch(function(error){
+
+            console.log("Sound blocked:", error);
+
+        });
+
+    }
+
+}
+
+
 
 
 // ===============================
@@ -54,20 +79,6 @@ btnOut.onclick = function(){
 
 
 let scanner;
-
-
-
-// scan success sound
-
-function scanBeep(){
-
-    let audio = new Audio(
-        "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
-    );
-
-    audio.play();
-
-}
 
 
 
@@ -97,7 +108,7 @@ function startScanner(){
 
 
 
-            // 🔊 beep sound
+            // 🔊 scan beep
 
             scanBeep();
 
@@ -109,7 +120,7 @@ function startScanner(){
 
 
 
-            // stop after successful scan
+            // stop after scan
 
             scanner.stop();
 
@@ -120,16 +131,17 @@ function startScanner(){
 
         function(errorMessage){
 
-            // scanning continues
+            // keep scanning
 
         }
 
 
     )
 
+
     .catch(function(err){
 
-        console.log("Camera Error:", err);
+        console.log("Camera Error:",err);
 
     });
 
@@ -139,9 +151,10 @@ function startScanner(){
 
 
 
+// ===============================
+// START CAMERA
+// ===============================
 
-
-// start camera when page load
 
 window.onload = function(){
 
