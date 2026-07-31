@@ -1,10 +1,19 @@
 // ===============================
 // Inventory Scanner V2
-// QR Scanner + IN / OUT Control
+// QR Scanner + Google Sheet
 // ===============================
 
 
 let currentMode = "IN";
+
+
+// Google Sheet Web App URL
+
+const GOOGLE_URL =
+"https://script.google.com/macros/s/AKfycbwXL948q6a3fBEDv_2XgNsYFRmB317QCKsnor6zLGhQDHbd3glIuACEBPwlaBgga6B_/exec";
+
+
+
 
 
 // ===============================
@@ -25,7 +34,8 @@ btnIn.onclick = function(){
     btnIn.classList.add("active");
     btnOut.classList.remove("active");
 
-    modeBanner.innerHTML = "🟢 CURRENT MODE : IN";
+    modeBanner.innerHTML =
+    "🟢 CURRENT MODE : IN";
 
 };
 
@@ -38,7 +48,8 @@ btnOut.onclick = function(){
     btnOut.classList.add("active");
     btnIn.classList.remove("active");
 
-    modeBanner.innerHTML = "🔴 CURRENT MODE : OUT";
+    modeBanner.innerHTML =
+    "🔴 CURRENT MODE : OUT";
 
 };
 
@@ -46,8 +57,9 @@ btnOut.onclick = function(){
 
 
 
+
 // ===============================
-// QR CODE SCANNER
+// QR SCANNER
 // ===============================
 
 
@@ -70,39 +82,25 @@ function startScanner(){
 
         {
             fps:10,
-
-            // 不显示中间扫描框
             qrbox: undefined
-
         },
 
 
         function(decodedText){
 
 
-            console.log("SCAN:", decodedText);
+            console.log("SCAN:",decodedText);
 
 
 
-            // 自动输入 Barcode
-
-            document.getElementById("barcode").value = decodedText;
-
+            document.getElementById("barcode").value =
+            decodedText;
 
 
-            // 扫码成功自动停止
 
-            scanner.stop()
-            .then(function(){
+            // stop camera
 
-                console.log("Scanner stopped");
-
-            })
-            .catch(function(err){
-
-                console.log(err);
-
-            });
+            scanner.stop();
 
 
 
@@ -111,22 +109,108 @@ function startScanner(){
 
         function(errorMessage){
 
-            // 继续扫描
-
         }
 
 
-    )
+    );
 
 
-    .catch(function(err){
+}
 
-        console.log("Camera Error:",err);
+
+
+
+// ===============================
+// SUBMIT TO GOOGLE SHEET
+// ===============================
+
+
+document.getElementById("submitBtn").onclick =
+function(){
+
+
+
+    let data = {
+
+
+        barcode:
+        document.getElementById("barcode").value,
+
+
+        mode:
+        currentMode,
+
+
+        batch:
+        document.getElementById("batch").value,
+
+
+        pieces:
+        document.getElementById("pieces").value,
+
+
+        cartons:
+        document.getElementById("cartons").value,
+
+
+        qty:
+        document.getElementById("qty").value,
+
+
+        writer:
+        document.getElementById("writer").value
+
+
+    };
+
+
+
+
+    fetch(GOOGLE_URL, {
+
+
+        method:"POST",
+
+
+        body:JSON.stringify(data)
+
+
+    })
+
+
+
+    .then(response=>response.json())
+
+
+    .then(result=>{
+
+
+        alert("✅ Saved to Google Sheet");
+
+
+        console.log(result);
+
+
+    })
+
+
+
+    .catch(error=>{
+
+
+        alert("❌ Error");
+
+
+        console.log(error);
+
 
     });
 
 
-}
+
+};
+
+
 
 
 
@@ -136,7 +220,7 @@ function startScanner(){
 // ===============================
 
 
-window.onload = function(){
+window.onload=function(){
 
     startScanner();
 
