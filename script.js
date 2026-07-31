@@ -9,17 +9,22 @@ function sendToSheet(code) {
     user: document.getElementById("user").value
   };
 
+  console.log("Sending:", data);
+
 
   fetch(scriptURL, {
     method: "POST",
-    body: JSON.stringify(data)
+    body: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    }
   })
 
-  .then(response => response.json())
+  .then(response => response.text())
 
   .then(result => {
 
-    console.log(result);
+    console.log("Server:", result);
 
     document.getElementById("result").innerHTML =
     "Success: " + code;
@@ -28,7 +33,7 @@ function sendToSheet(code) {
 
   .catch(error => {
 
-    console.log(error);
+    console.log("Error:", error);
 
     document.getElementById("result").innerHTML =
     "Failed";
