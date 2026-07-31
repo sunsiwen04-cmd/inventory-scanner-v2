@@ -4,11 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory Scanner V2</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>📦 Inventory Scanner V2</h1>
+<div class="container">
+
+    <h1>📦 Inventory Scanner</h1>
+
+    <!-- Transaction Type -->
+    <div class="section">
+        <label>Transaction Type</label>
+
+        <div class="mode">
+            <button id="btnIn" class="mode-btn active">
+                🟢 IN
+            </button>
+
+            <button id="btnOut" class="mode-btn">
+                ⚪ OUT
+            </button>
+        </div>
+    </div>
+
+    <!-- Barcode -->
+    <div class="section">
+        <label for="barcode">Barcode</label>
+        <input
+            type="text"
+            id="barcode"
+            placeholder="Scan Barcode"
+            readonly
+        >
+    </div>
+
+    <!-- Batch -->
+    <div class="section">
+        <label for="batch">Batch No.</label>
+        <input
+            type="text"
+            id="batch"
+            placeholder="Enter Batch No."
+        >
+    </div>
+
+    <!-- Pieces -->
+    <div class="section">
+        <label for="pieces">Pieces</label>
+        <input
+            type="number"
+            id="pieces"
+            placeholder="0"
+        >
+    </div>
+
+    <!-- Cartons -->
+    <div class="section">
+        <label for="cartons">Cartons</label>
+        <input
+            type="number"
+            id="cartons"
+            placeholder="0"
+        >
+    </div>
+
+    <!-- Qty -->
+    <div class="section">
+        <label for="qty">Qty (KG)</label>
+        <input
+            type="number"
+            id="qty"
+            placeholder="0"
+        >
+    </div>
+
+    <!-- Written By -->
+    <div class="section">
+        <label for="writer">Written By</label>
+
+        <select id="writer">
+
+            <option value="">Select Staff</option>
+
+            <option value="Sitong">
+                Sitong
+            </option>
+
+            <option value="Yazhen">
+                Yazhen
+            </option>
+
+            <option value="JIANGHUA">
+                JIANGHUA
+            </option>
+
+            <option value="KM">
+                KM
+            </option>
+
+            <option value="KY">
+                KY
+            </option>
+
+            <option value="Kyaw">
+                Kyaw
+            </option>
+
+        </select>
+    </div>
+
+    <!-- Submit -->
+    <button id="submitBtn">
+        ENTER / SUBMIT
+    </button>
+
+</div>
 
 <script src="script.js"></script>
 
