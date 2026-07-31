@@ -6,13 +6,9 @@ let currentMode = "IN";
 let html5QrCode = null;
 
 
-
-
-
 // =====================
 // IN / OUT BUTTON
 // =====================
-
 
 document.getElementById("btnIn").onclick = function(){
 
@@ -20,7 +16,6 @@ document.getElementById("btnIn").onclick = function(){
 
     document.getElementById("btnIn")
     .classList.add("active");
-
 
     document.getElementById("btnOut")
     .classList.remove("active");
@@ -34,15 +29,12 @@ document.getElementById("btnIn").onclick = function(){
 
 
 
-
 document.getElementById("btnOut").onclick = function(){
 
     currentMode = "OUT";
 
-
     document.getElementById("btnOut")
     .classList.add("active");
-
 
     document.getElementById("btnIn")
     .classList.remove("active");
@@ -58,13 +50,9 @@ document.getElementById("btnOut").onclick = function(){
 
 
 
-
-
-
 // =====================
 // START CAMERA
 // =====================
-
 
 html5QrCode = new Html5Qrcode("reader");
 
@@ -74,8 +62,7 @@ html5QrCode.start(
     { facingMode:"environment" },
 
     {
-        fps:10,
-        qrbox:250
+        fps:10
     },
 
 
@@ -97,19 +84,14 @@ html5QrCode.start(
 
 
 
-
-
-
 // =====================
 // SCAN SUCCESS
 // =====================
 
-
 function onScanSuccess(decodedText){
 
 
-    console.log("Scan:",decodedText);
-
+    console.log("Scan:", decodedText);
 
 
     document.getElementById("barcode")
@@ -143,7 +125,7 @@ function onScanSuccess(decodedText){
 
 function onScanFailure(error){
 
-    // 不显示错误
+    // 不显示扫描错误
 
 }
 
@@ -153,12 +135,9 @@ function onScanFailure(error){
 
 
 
-
-
 // =====================
-// SUBMIT
+// SUBMIT TO GOOGLE SHEET
 // =====================
-
 
 document.getElementById("submitBtn")
 .onclick=function(){
@@ -195,8 +174,8 @@ document.getElementById("submitBtn")
         writer:
         document.getElementById("writer").value
 
-
     };
+
 
 
 
@@ -210,6 +189,7 @@ document.getElementById("submitBtn")
 
 
 
+
     fetch(scriptURL,{
 
         method:"POST",
@@ -219,14 +199,15 @@ document.getElementById("submitBtn")
     })
 
 
+
     .then(response=>response.text())
+
 
 
     .then(result=>{
 
 
         console.log(result);
-
 
 
         alert("Submitted Successfully");
@@ -239,8 +220,8 @@ document.getElementById("submitBtn")
         .value="";
 
 
-
     })
+
 
 
     .catch(error=>{
