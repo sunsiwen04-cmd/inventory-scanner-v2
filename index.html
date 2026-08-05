@@ -3,13 +3,13 @@
 
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Inventory Scanner V2</title>
+<title>Inventory Scanner V3</title>
 
-    <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -20,259 +20,328 @@
 <div class="container">
 
 
-    <h1>📦 Inventory Scanner</h1>
+<h1>📦 Inventory Scanner</h1>
 
 
 
-    <!-- Current Mode -->
+<!-- MODE -->
 
-    <div id="modeBanner" class="mode-banner">
+<div id="modeBanner" class="mode-banner">
 
-        🟢 CURRENT MODE : IN
+🟢 CURRENT MODE : IN
 
-    </div>
+</div>
 
 
 
+<!-- IN OUT BUTTON -->
 
 
-    <!-- IN / OUT -->
+<div class="mode-buttons">
 
 
-    <div class="mode-buttons">
+<button id="btnIn" class="mode-btn active">
 
+🟢 IN
 
-        <button id="btnIn" class="mode-btn active">
+</button>
 
-            🟢 IN
 
-        </button>
 
+<button id="btnOut" class="mode-btn">
 
+⚪ OUT
 
-        <button id="btnOut" class="mode-btn">
+</button>
 
-            ⚪ OUT
 
-        </button>
+</div>
 
 
-    </div>
 
 
 
 
+<!-- BARCODE -->
 
 
-    <!-- Barcode -->
+<div class="form-group">
 
 
-    <div class="form-group">
+<label>Barcode</label>
 
 
-        <label>Barcode</label>
+<input
 
+type="text"
 
-        <input
+id="barcode"
 
-            type="text"
+placeholder="Waiting for Scan..."
 
-            id="barcode"
+readonly>
 
-            placeholder="Waiting for Scan..."
 
-            readonly>
+</div>
 
 
-    </div>
 
 
 
 
 
+<!-- PRODUCT -->
 
-    <!-- Camera -->
 
+<div class="form-group">
 
-    <div class="form-group">
 
+<label>Product</label>
 
-        <label>Camera</label>
 
+<input
 
-        <div id="reader"></div>
+type="text"
 
+id="product"
 
-    </div>
+placeholder="Auto Product"
 
+readonly>
 
 
+</div>
 
 
 
 
-    <!-- Batch -->
 
 
-    <div class="form-group">
 
 
-        <label>Batch No.</label>
+<!-- CAMERA -->
 
 
-        <input
+<div class="form-group">
 
-            type="text"
 
-            id="batch"
+<label>Camera</label>
 
-            placeholder="Enter Batch No.">
 
+<div id="reader"></div>
 
-    </div>
 
+</div>
 
 
 
 
 
 
-    <!-- Pieces -->
 
 
-    <div class="form-group">
+<!-- BATCH -->
 
 
-        <label>Pieces</label>
+<div class="form-group">
 
 
-        <input
+<label>Batch No.</label>
 
-            type="number"
 
-            id="pieces"
+<input
 
-            placeholder="0">
+type="text"
 
+id="batch"
 
-    </div>
+placeholder="Enter Batch No.">
 
 
+</div>
 
 
 
 
 
 
-    <!-- Cartons -->
 
 
-    <div class="form-group">
 
+<!-- EXPIRY -->
 
-        <label>Cartons</label>
 
+<div class="form-group">
 
-        <input
 
-            type="number"
+<label>Expiry Date</label>
 
-            id="cartons"
 
-            placeholder="0">
+<input
 
+type="date"
 
-    </div>
+id="expiry"
 
+readonly>
 
 
+</div>
 
 
 
 
 
-    <!-- Qty -->
 
 
-    <div class="form-group">
 
 
-        <label>Qty (KG)</label>
+<!-- PIECES -->
 
 
-        <input
+<div class="form-group">
 
-            type="number"
 
-            id="qty"
+<label>Pieces</label>
 
-            placeholder="0">
 
+<input
 
-    </div>
+type="number"
 
+id="pieces"
 
+placeholder="0">
 
 
+</div>
 
 
 
 
-    <!-- Written By -->
 
 
-    <div class="form-group">
 
 
-        <label>Written By</label>
 
+<!-- CARTONS -->
 
-        <select id="writer">
 
+<div class="form-group">
 
-            <option value="">
 
-                Select Staff
+<label>Cartons</label>
 
-            </option>
 
+<input
 
-            <option>Sitong</option>
+type="number"
 
-            <option>Yazhen</option>
+id="cartons"
 
-            <option>JIANGHUA</option>
+placeholder="0">
 
-            <option>KM</option>
 
-            <option>KY</option>
+</div>
 
-            <option>Kyaw</option>
 
 
-        </select>
 
 
-    </div>
 
 
 
 
+<!-- QTY -->
 
 
+<div class="form-group">
 
 
+<label>Qty (KG)</label>
 
-    <!-- Submit -->
 
+<input
 
-    <button id="submitBtn">
+type="number"
 
+id="qty"
 
-        ENTER / SUBMIT
+placeholder="0">
 
 
-    </button>
+</div>
+
+
+
+
+
+
+
+
+
+<!-- WRITER -->
+
+
+<div class="form-group">
+
+
+<label>Written By</label>
+
+
+<select id="writer">
+
+
+<option value="">
+
+Select Staff
+
+</option>
+
+
+<option>Sitong</option>
+
+
+<option>Yazhen</option>
+
+
+<option>JIANGHUA</option>
+
+
+<option>KM</option>
+
+
+<option>KY</option>
+
+
+<option>Kyaw</option>
+
+
+</select>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- SUBMIT -->
+
+
+<button id="submitBtn">
+
+
+ENTER / SUBMIT
+
+
+</button>
+
+
 
 
 
@@ -284,7 +353,7 @@
 
 
 
-<!-- QR Scanner Library -->
+<!-- HTML5 QR CODE -->
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
@@ -293,33 +362,15 @@
 
 
 
-<!-- Scan Sound -->
 
 
-<audio id="scanSound" preload="auto">
-
-    <source
-
-    src="https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
-
-    type="audio/ogg">
-
-</audio>
-
-
-
-
-
-
-<!-- Main Script -->
+<!-- SCRIPT -->
 
 
 <script src="script.js"></script>
 
 
 
-
 </body>
-
 
 </html>
