@@ -1,4 +1,4 @@
-const scriptURL = "https://script.google.com/macros/s/AKfycbwXL948q6a3fBEDv_2XgNsYFRmB317QCKsnor6zLGhQDHbd3glIuACEBPwlaBgga6B_/exec";
+const scriptURL = "https://script.google.com/macros/s/AKfycbweDuLhUy3rxAYwc4vnfkbUd8Pv4Y2IO0-3ziXNBHWqErssOat-mZ0d_zb_uCc8-t7Z/exec";
 
 let currentMode = "IN";
 
