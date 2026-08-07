@@ -78,6 +78,22 @@ function onScanSuccess(decodedText){
         .value = decodedText;
 
 
+    // 清空之前的 Expiry
+    clearExpiry();
+
+
+    // 如果 Batch 已经填写
+    // 直接查询
+    const batch =
+        document.getElementById("batch").value.trim();
+
+    if(batch !== ""){
+
+        loadExpiryDates();
+
+    }
+
+
     // 自动停止相机
 
     html5QrCode.stop()
@@ -100,6 +116,195 @@ function onScanSuccess(decodedText){
 function onScanFailure(error){
 
     // 不显示扫描错误
+
+}
+
+
+// =====================
+// BATCH CHANGE
+// =====================
+
+document.getElementById("batch")
+.addEventListener("change", function(){
+
+    loadExpiryDates();
+
+});
+
+
+// 也支持员工输入完 Batch 后直接查询
+
+document.getElementById("batch")
+.addEventListener("blur", function(){
+
+    loadExpiryDates();
+
+});
+
+
+// =====================
+// LOAD EXPIRY DATES
+// =====================
+
+function loadExpiryDates(){
+
+    const barcode =
+        document.getElementById("barcode").value.trim();
+
+    const batch =
+        document.getElementById("batch").value.trim();
+
+
+    // Barcode 或 Batch 没有填写
+    if(barcode === "" || batch === ""){
+
+        clearExpiry();
+
+        return;
+
+    }
+
+
+    // 先清空旧日期
+
+    clearExpiry();
+
+
+    const url =
+        scriptURL +
+        "?action=inventory" +
+        "&barcode=" +
+        encodeURIComponent(barcode) +
+        "&batch=" +
+        encodeURIComponent(batch);
+
+
+    fetch(url)
+
+    .then(response => response.json())
+
+    .then(result => {
+
+        console.log("Inventory result:", result);
+
+
+        if(result.status !== "success"){
+
+            console.log("No matching inventory found");
+
+            return;
+
+        }
+
+
+        const expirySelect =
+            document.getElementById("expiry");
+
+
+        // =====================
+        // 加入所有 Expiry Date
+        // =====================
+
+        result.expiries.forEach(function(item, index){
+
+            const option =
+                document.createElement("option");
+
+
+            option.value = item.expiry;
+
+
+            // 最早的日期
+            if(index === 0){
+
+                option.textContent =
+                    formatDisplayDate(item.expiry) +
+                    " 🚨 EARLIEST — PLEASE USE";
+
+            }else{
+
+                option.textContent =
+                    formatDisplayDate(item.expiry);
+
+            }
+
+
+            expirySelect.appendChild(option);
+
+        });
+
+
+        // =====================
+        // 自动选择最早日期
+        // =====================
+
+        if(result.expiries.length > 0){
+
+            expirySelect.value =
+                result.expiries[0].expiry;
+
+        }
+
+    })
+
+    .catch(error => {
+
+        console.log("Expiry lookup failed:", error);
+
+    });
+
+}
+
+
+// =====================
+// CLEAR EXPIRY
+// =====================
+
+function clearExpiry(){
+
+    const expirySelect =
+        document.getElementById("expiry");
+
+
+    expirySelect.innerHTML = "";
+
+
+    const defaultOption =
+        document.createElement("option");
+
+    defaultOption.value = "";
+
+    defaultOption.textContent =
+        "Select Expiry Date";
+
+
+    expirySelect.appendChild(defaultOption);
+
+}
+
+
+// =====================
+// DATE DISPLAY
+// =====================
+
+function formatDisplayDate(dateString){
+
+    const parts =
+        dateString.split("-");
+
+
+    if(parts.length !== 3){
+
+        return dateString;
+
+    }
+
+
+    return parts[2] +
+        "/" +
+        parts[1] +
+        "/" +
+        parts[0];
 
 }
 
@@ -145,9 +350,35 @@ document.getElementById("submitBtn")
     // CHECK BARCODE
     // =====================
 
-    if(data.barcode===""){
+    if(data.barcode === ""){
 
         alert("Please scan barcode");
+
+        return;
+
+    }
+
+
+    // =====================
+    // CHECK BATCH
+    // =====================
+
+    if(data.batch === ""){
+
+        alert("Please enter Batch No.");
+
+        return;
+
+    }
+
+
+    // =====================
+    // CHECK EXPIRY
+    // =====================
+
+    if(data.expiry === ""){
+
+        alert("Please select Expiry Date");
 
         return;
 
@@ -181,6 +412,17 @@ document.getElementById("submitBtn")
 
         document.getElementById("barcode")
             .value="";
+
+
+        // 清空 Batch
+
+        document.getElementById("batch")
+            .value="";
+
+
+        // 清空 Expiry
+
+        clearExpiry();
 
     })
 
