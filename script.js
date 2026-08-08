@@ -1,3 +1,4 @@
+```javascript
 const scriptURL = "https://script.google.com/macros/s/AKfycbweDuLhUy3rxAYwc4vnfkbUd8Pv4Y2IO0-3ziXNBHWqErssOat-mZ0d_zb_uCc8-t7Z/exec";
 
 let currentMode = "IN";
@@ -21,6 +22,7 @@ document.getElementById("btnIn").onclick = function(){
 
     document.getElementById("modeBanner")
         .innerHTML = "🟢 CURRENT MODE : IN";
+
 };
 
 
@@ -36,6 +38,7 @@ document.getElementById("btnOut").onclick = function(){
 
     document.getElementById("modeBanner")
         .innerHTML = "🔴 CURRENT MODE : OUT";
+
 };
 
 
@@ -47,10 +50,10 @@ html5QrCode = new Html5Qrcode("reader");
 
 html5QrCode.start(
 
-    { facingMode:"environment" },
+    { facingMode: "environment" },
 
     {
-        fps:10
+        fps: 10
     },
 
     onScanSuccess,
@@ -59,7 +62,7 @@ html5QrCode.start(
 
 )
 
-.catch(err=>{
+.catch(err => {
 
     console.log(err);
 
@@ -74,35 +77,35 @@ function onScanSuccess(decodedText){
 
     console.log("Scan:", decodedText);
 
+
+    // =====================
+    // Barcode 自动填入
+    // =====================
+
     document.getElementById("barcode")
         .value = decodedText;
 
 
+    // =====================
     // 清空之前的 Expiry
+    // =====================
+
     clearExpiry();
 
 
-    // 如果 Batch 已经填写
-    // 直接查询
-    const batch =
-        document.getElementById("batch").value.trim();
-
-        loadExpiryDates();
-
-    }
-
-
+    // =====================
     // 自动停止相机
+    // =====================
 
     html5QrCode.stop()
 
-    .then(()=>{
+    .then(() => {
 
         console.log("Camera stopped");
 
     })
 
-    .catch(err=>{
+    .catch(err => {
 
         console.log(err);
 
@@ -110,6 +113,10 @@ function onScanSuccess(decodedText){
 
 }
 
+
+// =====================
+// SCAN FAILURE
+// =====================
 
 function onScanFailure(error){
 
@@ -130,7 +137,9 @@ document.getElementById("batch")
 });
 
 
-// 也支持员工输入完 Batch 后直接查询
+// =====================
+// BATCH BLUR
+// =====================
 
 document.getElementById("batch")
 .addEventListener("blur", function(){
@@ -153,7 +162,10 @@ function loadExpiryDates(){
         document.getElementById("batch").value.trim();
 
 
+    // =====================
     // Barcode 或 Batch 没有填写
+    // =====================
+
     if(barcode === "" || batch === ""){
 
         clearExpiry();
@@ -163,10 +175,16 @@ function loadExpiryDates(){
     }
 
 
-    // 先清空旧日期
+    // =====================
+    // 清空旧日期
+    // =====================
 
     clearExpiry();
 
+
+    // =====================
+    // 查询 Inventory
+    // =====================
 
     const url =
         scriptURL +
@@ -185,6 +203,10 @@ function loadExpiryDates(){
 
         console.log("Inventory result:", result);
 
+
+        // =====================
+        // 没有找到库存
+        // =====================
 
         if(result.status !== "success"){
 
@@ -212,14 +234,19 @@ function loadExpiryDates(){
             option.value = item.expiry;
 
 
-            // 最早的日期
+            // =====================
+            // 最早日期
+            // =====================
+
             if(index === 0){
 
                 option.textContent =
                     formatDisplayDate(item.expiry) +
                     " 🚨 EARLIEST — PLEASE USE";
 
-            }else{
+            }
+
+            else{
 
                 option.textContent =
                     formatDisplayDate(item.expiry);
@@ -270,6 +297,7 @@ function clearExpiry(){
     const defaultOption =
         document.createElement("option");
 
+
     defaultOption.value = "";
 
     defaultOption.textContent =
@@ -312,34 +340,34 @@ function formatDisplayDate(dateString){
 // =====================
 
 document.getElementById("submitBtn")
-.onclick=function(){
+.onclick = function(){
 
 
     const data = {
 
         barcode:
-        document.getElementById("barcode").value,
+            document.getElementById("barcode").value,
 
         mode:
-        currentMode,
+            currentMode,
 
         batch:
-        document.getElementById("batch").value,
+            document.getElementById("batch").value,
 
         expiry:
-        document.getElementById("expiry").value,
+            document.getElementById("expiry").value,
 
         pieces:
-        document.getElementById("pieces").value,
+            document.getElementById("pieces").value,
 
         cartons:
-        document.getElementById("cartons").value,
+            document.getElementById("cartons").value,
 
         qty:
-        document.getElementById("qty").value,
+            document.getElementById("qty").value,
 
         writer:
-        document.getElementById("writer").value
+            document.getElementById("writer").value
 
     };
 
@@ -387,45 +415,52 @@ document.getElementById("submitBtn")
     // SEND TO GOOGLE SHEET
     // =====================
 
-    fetch(scriptURL,{
+    fetch(scriptURL, {
 
-        method:"POST",
+        method: "POST",
 
-        body:JSON.stringify(data)
+        body: JSON.stringify(data)
 
     })
 
 
-    .then(response=>response.text())
+    .then(response => response.text())
 
 
-    .then(result=>{
+    .then(result => {
 
         console.log(result);
+
 
         alert("Submitted Successfully");
 
 
+        // =====================
         // 清空 Barcode
+        // =====================
 
         document.getElementById("barcode")
-            .value="";
+            .value = "";
 
 
+        // =====================
         // 清空 Batch
+        // =====================
 
         document.getElementById("batch")
-            .value="";
+            .value = "";
 
 
+        // =====================
         // 清空 Expiry
+        // =====================
 
         clearExpiry();
 
     })
 
 
-    .catch(error=>{
+    .catch(error => {
 
         console.log(error);
 
@@ -434,3 +469,4 @@ document.getElementById("submitBtn")
     });
 
 };
+```
