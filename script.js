@@ -87,8 +87,6 @@ function onScanSuccess(decodedText){
     const batch =
         document.getElementById("batch").value.trim();
 
-    if(batch !== ""){
-
         loadExpiryDates();
 
     }
